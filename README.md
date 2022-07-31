@@ -27,17 +27,54 @@ $ sudo apt upgrade
 ```
 
 ## :pushpin: install go
-TODO
+```bash
+$ apt remove --autoremove golang-go
+$ apt install golang-go
+```
+```bash
+$HOME/.profile or /etc/profile
+export PATH=$PATH:/usr/local/go/bin
+$ go version
+```
 
-## :pushpin: install go packages
-web/was server: gin-gonic
+## :pushpin: set go PATH
 ```bash
-$ go get github.com/gin-gonic/gin
+$ go env
+$ vim ~/.profile
+GOROOT=/usr/lib/go-1.18
+GOPATH=/root/go/bin
+PATH=$PATH:$GOPATH
+$ source ~/.profile
 ```
-configuration : godotenv
+
+## :pushpin: configuration github
 ```bash
-$ go get github.com/joho/godotenv
+$ cd ~/.ssh
+$ cp your_private_key_for_github /root/.ssh/
+$ touch config
+Host github.com
+    User your_name
+    Hostname github.com
+    PreferredAuthentications publickey
+    IdentityFile /root/.ssh/id_ed25519_your_private_key
+$ ssh -T git@github.com
+Hi your_name! You've successfully authenticated, but GitHub does not provide shell access.
 ```
+
+## :pushpin: clone github project
+```bash
+$ git clone your_project.git
+```
+
+## :pushpin: set go module
+```bash
+$ go mod init github.com/your_name/your_project # 새로운 모듈 생성, go.mod 파일을 초기화
+$ go mod tidy # 사용하지 않는 의존성 삭제
+$ go test
+$ go list -m all # 현재 모듈의 의존성을 모두 출력
+```
+
+## :pushpin: install go air
 live reload: air
 ```bash
 $ go install github.com/cosmtrek/air@latest

@@ -34,5 +34,5 @@ func main() {
 	fmt.Println(os.Getenv("welcomemessage"))
 
 	r := setupRouter()
-	r.Run("0.0.0.0:8080")
+	r.Run("0.0.0.0:80")
 }
