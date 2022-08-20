@@ -93,8 +93,70 @@ $ vim .air.toml
 ```
 
 ## :pushpin: install elastic search
-TODO
+```bash
+$ curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic.gpg
+$ echo "deb [signed-by=/usr/share/keyrings/elastic.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+$ sudo apt update
+$ sudo apt install elasticsearch
+```
 
+## :pushpin: configuration elasticsearch
+```bash
+$ sudo vim /etc/elasticsearch/elasticsearch.yml
+cluster.name: your_project_name-cluster
+node.name: node-1
+network.host: 0.0.0.0
+http.port: 9200
+cluster.initial_master_nodes: ["node-1"]
+```
+
+## :pushpin: install elasticsearch plugin nori
+```bash
+$ cd /usr/share/elasticsearch
+$ bin/elasticsearch-plugin install analysis-nori
+```
+
+## :pushpin: elasticsearch CORS
+```bash
+http.cors.enabled : true
+http.cors.allow-origin : "*"
+http.cors.allow-methods : OPTIONS, HEAD, GET, POST
+http.cors.allow-headers : X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
+```
+
+## :pushpin: registration elasticsearch
+```bash
+$ systemctl start elasticsearch
+$ systemctl enable elasticsearch
+$ curl -X GET 'http://localhost:9200' # test
+```
+## :pushpin: registration elasticsearch python project
+```bash
+$ mkdir jeongmoji_python
+$ cd jeongmoji_python
+$ cp your_source jeong_moji.py
+$ apt install python3-pip
+$ pip3 install tqdm
+$ pip3 install elasticsearch
+$ touch jeong_moji.json 
+```
+
+## :pushpin: elasticsearch 인덱스 재생성 또는 갱신
+```bash
+$ python3 jeong_moji.py
+```
+
+## :pushpin: elasticsearch nori 점검
+```
+curl -XPOST "your_site/_search"  -H 'Content-Type: application/json' -d'
+  {
+     "query": {
+        "query_string": {
+            "query": "99_1_3_안드로이드.pdf"
+          }
+       }
+  }'
+```
 
 ## :cherry_blossom: go web/was server run
 ```bash
@@ -103,4 +165,33 @@ $ go run main.go
 or
 ```bash
 $ air -c .air.toml
+```
+
+## :cherry_blossom: registration go service
+make your_go_binary_file
+```bash
+$ go build your_go_binary_file
+```
+
+```bash
+$ cd 
+$ vim your_service_name
+[Unit]
+Description=Golang Gin Gonic webapp Daemon
+#After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/your_project_directory/
+ExecStart=/your_project_directory/your_go_binary_file
+TimeoutStopSec=300
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+$ systemctl start your_service_name
+$ systemctl enable your_service_name
 ```
