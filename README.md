@@ -191,7 +191,21 @@ TimeoutStopSec=300
 WantedBy=multi-user.target
 ```
 
+registration
 ```bash
 $ systemctl start your_service_name
 $ systemctl enable your_service_name
+```
+
+restart
+```bash
+$ systemctl list-units
+
+# elasticsearch
+$ systemctl status elasticsearch.service
+$ systemctl restart elasticsearch
+
+# gonic web searver
+$ systemctl status jeongmoji.service
+$ systemctl restart jeongmoji.service
 ```
